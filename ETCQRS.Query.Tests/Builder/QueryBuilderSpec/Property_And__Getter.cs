@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using ETCQRS.Query.Abstractions.Builder;
-using ETCQRS.Query.Abstractions.Util;
 using ETCQRS.Query.Builder;
-
-using Moq;
 
 using NUnit.Framework;
 

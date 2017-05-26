@@ -4,8 +4,6 @@ using System.Linq.Expressions;
 
 using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Builder;
-using ETCQRS.Query.Resources;
-using ETCQRS.Query.Util;
 
 
 namespace ETCQRS.Query.Builder
