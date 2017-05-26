@@ -11,7 +11,7 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.LessThanOrEqualMutatorSp
 
 {
     [TestFixture]
-    public class Property_TargetExpression__Getter
+    public class Method_GetTargetExpression
     {
         [Test]
         public void IT_SHOULD_RETURN_A_LESS_THAN_OR_EQUALS_EXPRESSION ()

@@ -33,13 +33,13 @@ namespace ETCQRS.Query.Builder
             }
         }
 
-        public IQueryDescriptor Descriptor { get; set; }
+        public IQueryDescriptor Descriptor { private get; set; }
 
         public virtual IQueryExpressionBuilder AddExpression (Func<Expression, Expression, BinaryExpression> operatorFunc, object value)
         {
-            Ensure.NullReference(Descriptor.PropertyExpression, ErrorMessages.PropertyNullReference);
+            Ensure.NullReference(Descriptor.Property, ErrorMessages.PropertyNullReference);
 
-            var query = operatorFunc(Descriptor.PropertyExpression, Expression.Constant(value));
+            var query = operatorFunc(Descriptor.Property, Expression.Constant(value));
 
             if (Descriptor.Query is null)
             {
@@ -78,6 +78,5 @@ namespace ETCQRS.Query.Builder
         {
             _observers = observers;
         }
-        
     }
 }

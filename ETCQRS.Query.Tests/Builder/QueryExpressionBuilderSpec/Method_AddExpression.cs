@@ -11,7 +11,7 @@ using Moq;
 using NUnit.Framework;
 
 
-namespace ETCQRS.Query.Tests.Builder.QueryBuilderSpec
+namespace ETCQRS.Query.Tests.Builder.QueryExpressionBuilderSpec
 {
     /**
      * Adds an expression query on passed descriptor.
@@ -32,16 +32,19 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuilderSpec
         private IQueryDescriptor _descriptor;
         private ParameterExpression _parameter;
         private MemberExpression _property;
+        private BinaryExpression _initialQuery;
+        
 
         [SetUp]
         public void TestSetup ()
         {
+            _initialQuery = Expression.Equal(_property, Expression.Constant("test"));
             _queryExpressionBuilder = new QueryExpressionBuilder();
             _descriptorMock = new Mock<IQueryDescriptor>();
             _parameter = Expression.Parameter(typeof(FakeEntity));
             _descriptorMock.SetupGet(d => d.Parameter).Returns(_parameter);
             _property = Expression.Property(_parameter, "Test");
-            _descriptorMock.SetupGet(d => d.PropertyExpression).Returns(_property);
+            _descriptorMock.SetupGet(d => d.Property).Returns(_property);
             _descriptor = _descriptorMock.Object;
             _descriptorMock.SetupProperty(d => d.Query);
             _queryExpressionBuilder.Descriptor = _descriptor;
@@ -62,9 +65,7 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuilderSpec
         [Test]
         public void IT_SHOULD_ADD_QUERY_TO_DESCRIPTOR_WHEN_NOT_NULL ()
         {
-            var initialQuery = Expression.Equal(_property, Expression.Constant("test"));
-
-            _descriptor.Query = initialQuery;
+            _descriptor.Query = _initialQuery;
             _queryExpressionBuilder.AddExpression(Expression.Equal, "test");
 
             var result = _descriptor.Query;
@@ -72,7 +73,7 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuilderSpec
             var resultRight = (BinaryExpression)result.Right;
 
 
-            Assert.AreSame(initialQuery, resultLeft);
+            Assert.AreSame(_initialQuery, resultLeft);
             Assert.AreEqual(ExpressionType.Equal, resultRight.NodeType);
             Assert.AreEqual("test", ((ConstantExpression)resultRight.Right).Value);
 
@@ -83,9 +84,7 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuilderSpec
         [Test]
         public void IT_SHOULD_COMPOSE_RESULTING_QUERY_WITH_AND_ALSO_WHEN_LINKER_IS_AND_ALSO ()
         {
-            var initialQuery = Expression.Equal(_property, Expression.Constant("test"));
-
-            _descriptor.Query = initialQuery;
+            _descriptor.Query = _initialQuery;
             _queryExpressionBuilder.QueryLinker = Expression.AndAlso;
             _queryExpressionBuilder.AddExpression(Expression.Equal, "test");
 
@@ -95,9 +94,7 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuilderSpec
         [Test]
         public void IT_SHOULD_COMPOSE_RESULTING_QUERY_WITH_OR_ELSE_WHEN_LINKER_IS_OR_ELSE ()
         {
-            var initialQuery = Expression.Equal(_property, Expression.Constant("test"));
-
-            _descriptor.Query = initialQuery;
+            _descriptor.Query = _initialQuery;
             _queryExpressionBuilder.QueryLinker = Expression.OrElse;
             _queryExpressionBuilder.AddExpression(Expression.Equal, "test");
 
@@ -107,7 +104,7 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuilderSpec
         [Test]
         public void IT_SHOULD_THROW_NULL_REFERENCE_EXCEPTION_IF_DESCRIPTORS_PROPERTY_EXPRESSION_IS_NULL ()
         {
-            _descriptorMock.SetupGet(d => d.PropertyExpression).Returns(() => null);
+            _descriptorMock.SetupGet(d => d.Property).Returns(() => null);
             var exception = Assert.Throws<NullReferenceException>(() => _queryExpressionBuilder.AddExpression(Expression.Equal, "test"));
 
             Assert.AreEqual("You must provide a property to compare the value to", exception.Message);

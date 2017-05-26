@@ -9,7 +9,7 @@ namespace ETCQRS.Query.Abstractions.Builder
     {
         BinaryExpression Query { get; set; }
         ParameterExpression Parameter { get; }
-        MemberExpression PropertyExpression { get; set; }
+        MemberExpression Property { get; set; }
         
         void SetMutator (IExpressionMutator mutator);
 

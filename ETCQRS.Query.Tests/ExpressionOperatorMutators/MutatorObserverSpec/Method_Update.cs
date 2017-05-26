@@ -22,7 +22,8 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.MutatorObserverSpec
     {
         private Mock<IQueryDescriptor> _descriptorMock;
         private IObserver _observer;
-        private MutatorFlyweightFactory _mutators = new MutatorFlyweightFactory ();
+        private readonly MutatorFlyweightFactory _mutators = new MutatorFlyweightFactory ();
+        private readonly ConstantExpression _constantExpression = Expression.Constant(3);
 
         [SetUp]
         public void SetupTest ()
@@ -36,21 +37,21 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.MutatorObserverSpec
         public void IT_SHOULD_CHANGE_MUTATOR_TO_GREATER_THAN_OR_EQUAL_IF_PASSED_EXPRESSION_IS_OF_TYPE_GREATER_THAN ()
         {
             _descriptorMock.Setup(d => d.SetMutator(It.IsAny<GreaterThanOrEqualMutator>()));
-            _observer.Update(Expression.GreaterThan(Expression.Constant(3), Expression.Constant(3)));
+            _observer.Update(Expression.GreaterThan(_constantExpression, _constantExpression));
         }
 
         [Test]
         public void IT_SHOULD_CHANGE_MUTATOR_TO_LESS_THAN_OR_EQUAL_IF_PASSED_EXPRESSION_IS_OF_TYPE_LESS_THAN ()
         {
             _descriptorMock.Setup(d => d.SetMutator(It.IsAny<LessThanOrEqualMutator>()));
-            _observer.Update(Expression.LessThan(Expression.Constant(3), Expression.Constant(3)));
+            _observer.Update(Expression.LessThan(_constantExpression, _constantExpression));
         }
 
         [Test]
         public void IT_SHOULD_CHANGE_MUTATOR_TO_NULL_IF_PASSED_EXPRESSION_IS_OF_ANY_OTHER_TYPE ()
         {
             _descriptorMock.Setup(d => d.SetMutator(It.IsAny<NullMutator>()));
-            _observer.Update(Expression.Equal(Expression.Constant(3), Expression.Constant(3)));
+            _observer.Update(Expression.Equal(_constantExpression, _constantExpression));
         }
     }
 }

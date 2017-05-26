@@ -15,12 +15,12 @@ namespace ETCQRS.Query.ExpressionOperatorMutator
         {
             Ensure.NullReference(context.Query, ErrorMessages.QueryNullReference);
             Ensure.NullReference(NextMutator, ErrorMessages.NextMutatorNullReference);
+
             var nodeType = context.Query.NodeType;
             var expression = GetTargetExpression();
 
             if (expression != null)
             {
-
                 if (nodeType == ExpressionType.AndAlso || nodeType == ExpressionType.OrElse)
                 {
                     var expressionToRecreate = (BinaryExpression)context.Query.Right;

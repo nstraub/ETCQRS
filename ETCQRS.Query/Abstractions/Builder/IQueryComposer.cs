@@ -5,7 +5,7 @@ using ETCQRS.Query.Abstractions.Base;
 
 namespace ETCQRS.Query.Abstractions.Builder
 {
-    public interface IQueryBuildFacade
+    public interface IQueryComposer
     {
         void AddQuery(IQuery query, IQueryBuilder queryBuilder);
 

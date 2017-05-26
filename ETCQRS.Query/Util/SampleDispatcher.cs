@@ -14,12 +14,12 @@ namespace ETCQRS.Query.Util
     [Localizable(false)]
     public class SampleDispatcher : IQueryDispatcher
     {
-        private readonly IQueryBuildFacade _facade;
+        private readonly IQueryComposer _composer;
         private readonly Dictionary<string, Type> _queryBuilders = new Dictionary<string, Type>();
 
-        public SampleDispatcher (IQueryBuildFacade facade, params string[] assemblyNames)
+        public SampleDispatcher (IQueryComposer composer, params string[] assemblyNames)
         {
-            _facade = facade;
+            _composer = composer;
             IList<Type> types = AppDomain.CurrentDomain.GetAssemblies().Where(a => assemblyNames.Any(an => a.FullName.Contains(an))).SelectMany(a => a.GetTypes()).ToList();
             var queries = types.Where(t => typeof(IQuery).IsAssignableFrom(t)).ToList();
             var queryBuilders = types.Where(t => typeof(IQueryBuilder).IsAssignableFrom(t));
@@ -42,10 +42,10 @@ namespace ETCQRS.Query.Util
 
                 var builder = Activator.CreateInstance(builderType, descriptorFactory, queryExpressionBuilder);
 
-                _facade.AddQuery(query, (IQueryBuilder)builder);
+                _composer.AddQuery(query, (IQueryBuilder)builder);
             }
 
-            return _facade.Run<TIn, TOut>(source);
+            return _composer.Run<TIn, TOut>(source);
         }
     }
 }

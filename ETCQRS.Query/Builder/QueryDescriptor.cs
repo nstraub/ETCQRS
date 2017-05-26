@@ -28,6 +28,6 @@ namespace ETCQRS.Query.Builder
 
         public virtual BinaryExpression Query { get; set; }
         public ParameterExpression Parameter { get; }
-        public MemberExpression PropertyExpression { get; set; }
+        public MemberExpression Property { get; set; }
     }
 }

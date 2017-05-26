@@ -6,7 +6,7 @@ using ETCQRS.Query.Builder;
 using NUnit.Framework;
 
 
-namespace ETCQRS.Query.Tests.Builder.QueryBuilderSpec
+namespace ETCQRS.Query.Tests.Builder.QueryExpressionBuilderSpec
 
 {
     [TestFixture]

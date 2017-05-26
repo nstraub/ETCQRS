@@ -9,7 +9,7 @@ using ETCQRS.Query.Factories;
 
 namespace ETCQRS.Query.Abstractions.Builder {
     // ReSharper disable once UnusedTypeParameter
-    public abstract class QueryBuilderTemplate<T> : IQueryBuilder where T : class, IQuery
+    public abstract class QueryBuilder<T> : IQueryBuilder where T : class, IQuery
     {
         protected readonly IQueryExpressionBuilder ExpressionBuilder;
         protected IQueryDescriptorFactory DescriptorFactory { get; }
@@ -22,7 +22,7 @@ namespace ETCQRS.Query.Abstractions.Builder {
         protected readonly List<MethodCallExpression> MethodCall = new List<MethodCallExpression>();
         protected Type ParameterType { get; set; }
 
-        protected QueryBuilderTemplate (IQueryDescriptorFactory descriptorFactory, IQueryExpressionBuilder expressionBuilder)
+        protected QueryBuilder (IQueryDescriptorFactory descriptorFactory, IQueryExpressionBuilder expressionBuilder)
         {
             ExpressionBuilder = expressionBuilder;
             DescriptorFactory = descriptorFactory;
@@ -44,7 +44,7 @@ namespace ETCQRS.Query.Abstractions.Builder {
         
         public virtual void BuildProperty ()
         {
-            Descriptor.PropertyExpression = Expression.Property(Descriptor.Parameter, PropertyName);
+            Descriptor.Property = Expression.Property(Descriptor.Parameter, PropertyName);
         }
         public abstract void BuildExpression ();
         public abstract void BuildMethodCall ();
