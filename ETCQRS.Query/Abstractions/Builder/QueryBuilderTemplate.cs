@@ -28,6 +28,12 @@ namespace ETCQRS.Query.Abstractions.Builder {
             DescriptorFactory = descriptorFactory;
         }
 
+        public virtual void InitProperties (IQuery query)
+        {
+            ParameterType = query.ParameterType;
+            PropertyName = query.PropertyName;
+        }
+
         public abstract void Init (IQuery query);
 
         public virtual void BuildParameter ()

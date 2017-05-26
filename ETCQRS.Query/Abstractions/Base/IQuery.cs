@@ -1,4 +1,11 @@
-﻿namespace ETCQRS.Query.Abstractions.Base
+﻿using System;
+
+
+namespace ETCQRS.Query.Abstractions.Base
 {
-    public interface IQuery { }
+    public interface IQuery
+    {
+        Type ParameterType { get; }
+        string PropertyName { get; }
+    }
 }
