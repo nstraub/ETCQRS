@@ -1,22 +1,16 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
+
+using ETCQRS.Query.Abstractions.Base;
 
 
 namespace ETCQRS.Query.Abstractions.Builder
 {
     public interface IQueryBuildFacade
     {
-        IQueryBuildFacade And { get; }
-        IQueryBuildFacade Or { get; }
-        IQueryBuildFacade UsingType (Type type);
-        IQueryBuildFacade Property (string propertyName);
+        void AddQuery(IQuery query, IQueryBuilder queryBuilder);
 
-        IQueryBuildFacade AddExpression (Func<Expression, Expression, BinaryExpression> operatorFunc, object value);
-
-        Expression<Func<T, bool>> GetResult<T> () where T : class;
-
-        IQueryBuildFacade Mutate ();
-
-        IQueryComposite Composite { get; }
+        IQueryable<TOut> Run<TIn, TOut> (IQueryable<TIn> source) where TIn : class where TOut : class;
     }
 }

@@ -24,37 +24,9 @@ namespace ETCQRS.Query.Builder
             CallChain = new Queue<MethodCallExpression>();
         }
 
-        internal Queue<MethodCallExpression> CallChain { get; set; }
+        public Queue<MethodCallExpression> CallChain { get; }
         
         
-        public IQueryComposite AddWhereExpression<T> (Expression<Func<T, bool>> expressionResult)
-            where T : class
-        {
-            CallChain.Enqueue(CallFactory.CreateWhere(expressionResult));
-            return this;
-        }
-
-        public IQueryComposite AddProjectionExpression<TIn, TOut> (Expression<Func<TIn, TOut>> mapper = null)
-            where TIn : class
-            where TOut : class
-        {
-            if (mapper is null)
-            {
-                CallChain.Enqueue(CallFactory.CreateOfType<TIn, TOut>());
-            }
-            else if (typeof(IEnumerable).IsAssignableFrom(typeof(TOut)))
-            {
-                CallChain.Enqueue(CallFactory.CreateSelectMany(mapper));
-            }
-            else
-            {
-                CallChain.Enqueue(CallFactory.CreateSelect(mapper));
-            }
-
-            return this;
-        }
-
-
         public IQueryable<TOut> Run<TIn, TOut> (IQueryable<TIn> source)
             where TIn : class
             where TOut : class

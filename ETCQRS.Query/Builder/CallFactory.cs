@@ -8,7 +8,7 @@ using ETCQRS.Query.Util;
 
 namespace ETCQRS.Query.Builder
 {
-    internal class CallFactory
+    public class CallFactory
     {
         public MethodCallExpression CreateWhere<T> (Expression<Func<T, bool>> iterator) where T : class
         {

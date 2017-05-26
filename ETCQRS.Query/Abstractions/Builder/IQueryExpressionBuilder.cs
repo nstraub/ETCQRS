@@ -8,7 +8,10 @@ namespace ETCQRS.Query.Abstractions.Builder
 {
     public interface IQueryExpressionBuilder : IObservable
     {
-        Func<Expression, Expression, BinaryExpression> QueryLinker { set; }
-        void AddExpression (IQueryDescriptor descriptor, Func<Expression, Expression, BinaryExpression> operatorFunc, object value);
+        IQueryExpressionBuilder And { get; }
+        IQueryExpressionBuilder Or { get; }
+        IQueryDescriptor Descriptor { set; }
+        IQueryExpressionBuilder AddExpression (Func<Expression, Expression, BinaryExpression> operatorFunc, object value);
+        IQueryExpressionBuilder Mutate ();
     }
 }

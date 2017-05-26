@@ -19,13 +19,13 @@ namespace ETCQRS.Query.Tests.Extensions.QueryBuildDirectorExtensionsSpec
     [TestFixture]
     public class Method_BasicMethods
     {
-        private Mock<IQueryBuildFacade> _directorMock;
-        private IQueryBuildFacade _facade;
+        private Mock<IQueryExpressionBuilder> _directorMock;
+        private IQueryExpressionBuilder _facade;
 
         [SetUp]
         public void SetupTest ()
         {
-            _directorMock = new Mock<IQueryBuildFacade>();
+            _directorMock = new Mock<IQueryExpressionBuilder>();
             _facade = _directorMock.Object;
             _directorMock.SetupGet(d => d.And).Returns(_facade);
             _directorMock.Setup(d => d.AddExpression(It.IsAny<Func<Expression, Expression, BinaryExpression>>(), "test")).Returns(_facade);

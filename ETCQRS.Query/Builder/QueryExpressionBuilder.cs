@@ -16,57 +16,69 @@ namespace ETCQRS.Query.Builder
         private Func<Expression, Expression, BinaryExpression> _queryLinker = Expression.AndAlso;
         private IList<IObserver> _observers = new List<IObserver>();
 
-        public virtual void AddExpression (IQueryDescriptor descriptor, Func<Expression, Expression, BinaryExpression> operatorFunc, object value)
+        public IQueryExpressionBuilder And
         {
-            Ensure.NullReference(descriptor.PropertyExpression, ErrorMessages.PropertyNullReference);
-
-            var query = operatorFunc(descriptor.PropertyExpression, Expression.Constant(value));
-
-            if (descriptor.Query is null)
+            get
             {
-                descriptor.Query = query;
+                QueryLinker = Expression.AndAlso;
+                return this;
+            }
+        }
+
+        public IQueryExpressionBuilder Or
+        {
+            get
+            {
+                QueryLinker = Expression.OrElse;
+                return this;
+            }
+        }
+
+        public IQueryDescriptor Descriptor { get; set; }
+
+        public virtual IQueryExpressionBuilder AddExpression (Func<Expression, Expression, BinaryExpression> operatorFunc, object value)
+        {
+            Ensure.NullReference(Descriptor.PropertyExpression, ErrorMessages.PropertyNullReference);
+
+            var query = operatorFunc(Descriptor.PropertyExpression, Expression.Constant(value));
+
+            if (Descriptor.Query is null)
+            {
+                Descriptor.Query = query;
             }
             else
             {
-                descriptor.Query = QueryLinker(descriptor.Query, query);
+                Descriptor.Query = QueryLinker(Descriptor.Query, query);
             }
             foreach (var observer in _observers)
             {
                 observer.Update(query);
             }
+
+            return this;
+        }
+
+        public IQueryExpressionBuilder Mutate ()
+        {
+            Descriptor.Mutate();
+            return this;
         }
 
         public Func<Expression, Expression, BinaryExpression> QueryLinker
         {
-            private get { return _queryLinker; }
+            internal get { return _queryLinker; }
             set
             {
                 Ensure.ValidOperation(value == Expression.AndAlso || value == Expression.OrElse, ErrorMessages.InvalidQueryLinkerExpression);
                 _queryLinker = value;
             }
         }
-        
-        public IQueryExpressionBuilder SetMutator (IQueryDescriptor descriptor, IExpressionMutator mutator)
-        {
-            descriptor.SetMutator(mutator);
-            return this;
-        }
 
-        public IQueryExpressionBuilder Mutate (IQueryDescriptor descriptor)
-        {
-            descriptor.Mutate();
-            return this;
-        }
-
-
-
-        #region Implementation of IObservable
 
         public void Subscribe (params IObserver[] observers)
         {
             _observers = observers;
         }
-
-        #endregion
+        
     }
 }

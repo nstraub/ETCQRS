@@ -135,9 +135,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builder\QueryBuildDirectorSpec\Method_UsingType.cs" />
-    <Compile Include="Builder\QueryBuildDirectorSpec\Property_And__Getter.cs" />
-    <Compile Include="Builder\QueryBuildDirectorSpec\Property_Or__Getter.cs" />
+    <Compile Include="Builder\QueryBuilderSpec\Property_And__Getter.cs" />
+    <Compile Include="Builder\QueryBuilderSpec\Property_Or__Getter.cs" />
     <Compile Include="Builder\QueryBuilderSpec\Method_AddExpression.cs" />
     <Compile Include="Builder\QueryBuilderSpec\Property_QueryLinker__Setter.cs" />
     <Compile Include="ExpressionOperatorMutators\MutatorObserverSpec\Method_Update.cs" />
@@ -165,6 +164,9 @@
       <Project>{E80B7DEA-B18A-4671-9C83-4C9D54C59E38}</Project>
       <Name>ETCQRS.Query</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Builder\QueryBuildDirectorSpec\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
