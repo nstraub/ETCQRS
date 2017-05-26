@@ -1,6 +1,4 @@
-﻿using System;
-
-using ETCQRS.Query.Abstractions.Util;
+﻿using ETCQRS.Query.Abstractions.Util;
 using ETCQRS.Query.Tests.Fakes;
 using ETCQRS.Query.Util;
 

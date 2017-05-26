@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
+using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Abstractions.Util;
 using ETCQRS.Query.Resources;
@@ -12,7 +11,7 @@ using ETCQRS.Query.Util;
 
 namespace ETCQRS.Query.Builder
 {
-    public class QueryBuilder : IQueryBuilder
+    public class QueryExpressionBuilder : IQueryExpressionBuilder
     {
         private Func<Expression, Expression, BinaryExpression> _queryLinker = Expression.AndAlso;
         private IList<IObserver> _observers = new List<IObserver>();
@@ -47,13 +46,13 @@ namespace ETCQRS.Query.Builder
             }
         }
         
-        public IQueryBuilder SetMutator (IQueryDescriptor descriptor, IExpressionMutator mutator)
+        public IQueryExpressionBuilder SetMutator (IQueryDescriptor descriptor, IExpressionMutator mutator)
         {
             descriptor.SetMutator(mutator);
             return this;
         }
 
-        public IQueryBuilder Mutate (IQueryDescriptor descriptor)
+        public IQueryExpressionBuilder Mutate (IQueryDescriptor descriptor)
         {
             descriptor.Mutate();
             return this;

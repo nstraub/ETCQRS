@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using ETCQRS.Query.ExpressionOperatorMutators;
+using ETCQRS.Query.ExpressionOperatorMutator;
 using ETCQRS.Query.Util;
 
 using NUnit.Framework;

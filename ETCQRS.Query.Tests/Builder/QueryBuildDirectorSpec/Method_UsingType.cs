@@ -1,5 +1,6 @@
 ﻿using System;
 
+using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Abstractions.Util;
 using ETCQRS.Query.Builder;
@@ -22,8 +23,8 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuildDirectorSpec
     [TestFixture]
     public class Method_UsingType
     {
-        private IQueryBuildDirector _director;
-        private Mock<IQueryBuilder> _builderMock;
+        private IQueryBuildFacade _facade;
+        private Mock<IQueryExpressionBuilder> _builderMock;
         private Mock<IQueryDescriptorFactory> _factoryMock;
         private Mock<IQueryDescriptor> _descriptorMock;
         private Mock<IObserver> _observerMock;
@@ -33,37 +34,37 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuildDirectorSpec
         public void SetupTest ()
         {
             _factoryMock = new Mock<IQueryDescriptorFactory>();
-            _builderMock = new Mock<IQueryBuilder>();
+            _builderMock = new Mock<IQueryExpressionBuilder>();
             _descriptorMock = new Mock<IQueryDescriptor>();
             _observerMock = new Mock<IObserver>();
 
             _factoryMock.Setup(f => f.Create(typeof(FakeEntity))).Returns(_descriptorMock.Object);
             _factoryMock.Setup(f => f.CreateMutatorObserver(_descriptorMock.Object)).Returns(_observerMock.Object);
 
-            _director = new QueryBuildDirector(_factoryMock.Object, _builderMock.Object);
+            _facade = new QueryBuildFacade(_factoryMock.Object, _builderMock.Object, new QueryComposite());
         }
 
         [Test]
         public void IT_SHOULD_CREATE_A_NEW_QUERY_DESCRIPTOR_USING_THE_PASSED_TYPE ()
         {
-            _director.UsingType(typeof(FakeEntity));
+            _facade.UsingType(typeof(FakeEntity));
             _factoryMock.Verify();
         }
 
         [Test]
         public void IT_SHOULD_THROW_AN_EXCEPTION_IF_THERE_IS_ALREADY_AN_ACTIVE_QUERY_AND_PASSED_TYPE_IS_NOT_SAME ()
         {
-            _director.UsingType(typeof(FakeEntity));
+            _facade.UsingType(typeof(FakeEntity));
 
-            var exception = Assert.Throws<InvalidOperationException>(() => _director.UsingType(typeof(OtherFakeEntity)));
+            var exception = Assert.Throws<InvalidOperationException>(() => _facade.UsingType(typeof(OtherFakeEntity)));
             Assert.AreEqual("You are already building an expression. Finalize it by invoking the appropriate AddExpression method before creating a new one", exception.Message);
         }
 
         [Test]
         public void IT_SHOULD_NOT_PERFORM_ANY_OPERATION_IF_PASSED_TYPE_IS_SAME_AS_CURRENT_QUERY ()
         {
-            _director.UsingType(typeof(FakeEntity));
-            _director.UsingType(typeof(FakeEntity));
+            _facade.UsingType(typeof(FakeEntity));
+            _facade.UsingType(typeof(FakeEntity));
 
             _factoryMock.Verify(f => f.Create(typeof(FakeEntity)), Times.AtMostOnce);
         }
@@ -71,7 +72,7 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuildDirectorSpec
         [Test]
         public void IT_SHOULD_SUBSCRIBE_A_MUTATOR_OBSERVER_ON_THE_BUILDER ()
         {
-            _director.UsingType(typeof(FakeEntity));
+            _facade.UsingType(typeof(FakeEntity));
             _builderMock.Verify(b => b.Subscribe(_observerMock.Object), Times.Once);
         }
     }

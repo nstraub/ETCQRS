@@ -7,7 +7,7 @@ using ETCQRS.Query.Resources;
 using ETCQRS.Query.Util;
 
 
-namespace ETCQRS.Query.ExpressionOperatorMutators
+namespace ETCQRS.Query.ExpressionOperatorMutator
 {
     public abstract class GenericMutatorTemplate : IExpressionMutator
     {

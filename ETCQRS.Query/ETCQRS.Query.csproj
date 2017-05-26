@@ -50,24 +50,26 @@
     <Compile Include="Abstractions\Base\IQueryDispatcher.cs" />
     <Compile Include="Abstractions\Base\IQueryHandler.cs" />
     <Compile Include="Abstractions\Base\IQueryResult.cs" />
-    <Compile Include="Abstractions\Builder\IObserver.cs" />
-    <Compile Include="Abstractions\Builder\IObservable.cs" />
-    <Compile Include="Abstractions\Builder\IQueryBuildDirector.cs" />
-    <Compile Include="Abstractions\Builder\IQueryBuilder.cs" />
+    <Compile Include="Abstractions\Base\IObserver.cs" />
+    <Compile Include="Abstractions\Base\IObservable.cs" />
+    <Compile Include="Abstractions\Builder\IQueryBuildFacade.cs" />
+    <Compile Include="Abstractions\Builder\IQueryExpressionBuilder.cs" />
     <Compile Include="Abstractions\Builder\IQueryComposite.cs" />
     <Compile Include="Abstractions\Builder\IQueryDescriptor.cs" />
+    <Compile Include="Builder\CallFactory.cs" />
     <Compile Include="Abstractions\Util\IFlyweightFactory.cs" />
     <Compile Include="Abstractions\Util\IExpressionMutator.cs" />
     <Compile Include="Abstractions\Util\IQueryDescriptorFactory.cs" />
-    <Compile Include="Builder\QueryBuildDirector.cs" />
-    <Compile Include="Builder\QueryBuilder.cs" />
+    <Compile Include="Builder\MethodInfos.cs" />
+    <Compile Include="Builder\QueryBuildFacade.cs" />
+    <Compile Include="Builder\QueryExpressionBuilder.cs" />
     <Compile Include="Builder\QueryComposite.cs" />
     <Compile Include="Builder\QueryDescriptor.cs" />
-    <Compile Include="ExpressionOperatorMutators\GenericMutatorTemplate.cs" />
-    <Compile Include="ExpressionOperatorMutators\GreaterThanOrEqualMutator.cs" />
-    <Compile Include="ExpressionOperatorMutators\LessThanOrEqualMutator.cs" />
-    <Compile Include="ExpressionOperatorMutators\NullMutator.cs" />
-    <Compile Include="ExpressionOperatorMutators\ThrowingMutator.cs" />
+    <Compile Include="ExpressionOperatorMutator\GenericMutatorTemplate.cs" />
+    <Compile Include="ExpressionOperatorMutator\GreaterThanOrEqualMutator.cs" />
+    <Compile Include="ExpressionOperatorMutator\LessThanOrEqualMutator.cs" />
+    <Compile Include="ExpressionOperatorMutator\NullMutator.cs" />
+    <Compile Include="ExpressionOperatorMutator\ThrowingMutator.cs" />
     <Compile Include="Extensions\QueryBuildDirectorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ErrorMessages.Designer.cs">
@@ -76,9 +78,8 @@
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Util\Ensure.cs" />
-    <Compile Include="Util\MutationStateCommand.cs" />
     <Compile Include="Util\MutatorFlyweightFactory.cs" />
-    <Compile Include="Builder\MutatorObserver.cs" />
+    <Compile Include="ExpressionOperatorMutator\MutatorObserver.cs" />
     <Compile Include="Util\QueryDescriptorFactory.cs" />
     <Compile Include="Util\QueryFlyweightFactory.cs" />
   </ItemGroup>

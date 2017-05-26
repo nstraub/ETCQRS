@@ -2,7 +2,7 @@
 using ETCQRS.Query.Abstractions.Util;
 
 
-namespace ETCQRS.Query.ExpressionOperatorMutators
+namespace ETCQRS.Query.ExpressionOperatorMutator
 {
     public class ThrowingMutator : IExpressionMutator
     {

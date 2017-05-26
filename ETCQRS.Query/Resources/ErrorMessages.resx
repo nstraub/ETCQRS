@@ -132,4 +132,10 @@
   <data name="PropertyNullReference" xml:space="preserve">
     <value>You must provide a property to compare the value to</value>
   </data>
+  <data name="WrongOfTypeCast" xml:space="preserve">
+    <value>When casting your destination must be a subtype of your source</value>
+  </data>
+  <data name="NoQuery" xml:space="preserve">
+    <value>There must be a Query to build from. Currently, no query is being built</value>
+  </data>
 </root>

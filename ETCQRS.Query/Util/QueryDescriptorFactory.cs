@@ -1,8 +1,10 @@
 ﻿using System;
 
+using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Abstractions.Util;
 using ETCQRS.Query.Builder;
+using ETCQRS.Query.ExpressionOperatorMutator;
 
 
 namespace ETCQRS.Query.Util

@@ -140,6 +140,7 @@
     <Compile Include="Builder\QueryBuildDirectorSpec\Property_Or__Getter.cs" />
     <Compile Include="Builder\QueryBuilderSpec\Method_AddExpression.cs" />
     <Compile Include="Builder\QueryBuilderSpec\Property_QueryLinker__Setter.cs" />
+    <Compile Include="ExpressionOperatorMutators\MutatorObserverSpec\Method_Update.cs" />
     <Compile Include="ExpressionOperatorMutators\NullMutatorSpec\Method_Execute.cs" />
     <Compile Include="ExpressionOperatorMutators\GenericMutatorTemplateSpec\Method_Execute.cs" />
     <Compile Include="ExpressionOperatorMutators\GreaterThanOrEqualMutatorSpec\Property_NextMutator__Getter.cs" />

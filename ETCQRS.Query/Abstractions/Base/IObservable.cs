@@ -1,4 +1,4 @@
-﻿namespace ETCQRS.Query.Abstractions.Builder
+﻿namespace ETCQRS.Query.Abstractions.Base
 {
     public interface IObservable
     {

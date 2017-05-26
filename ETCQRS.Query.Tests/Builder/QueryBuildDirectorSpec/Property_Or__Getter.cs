@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Abstractions.Util;
@@ -19,10 +18,11 @@ namespace ETCQRS.Query.Tests.Builder.QueryBuildDirectorSpec
         [Test]
         public void IT_SHOULD_SET_BULDER_QUERY_LINKER_TO_OR_ELSE_EXPRESSION ()
         {
-            var builderMock = new Mock<IQueryBuilder>(MockBehavior.Strict);
-            var director = new QueryBuildDirector(new Mock<IQueryDescriptorFactory>().Object, builderMock.Object);
+            var builderMock = new Mock<IQueryExpressionBuilder>(MockBehavior.Strict);
+            var director = new QueryBuildFacade(new Mock<IQueryDescriptorFactory>().Object, builderMock.Object, new QueryComposite());
 
             builderMock.SetupSet(b => b.QueryLinker = Expression.OrElse);
+            // ReSharper disable once UnusedVariable
             var queryBuildDirector = director.Or;
         }
     }

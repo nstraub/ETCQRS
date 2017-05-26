@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 
-namespace ETCQRS.Query.Abstractions.Builder
+namespace ETCQRS.Query.Abstractions.Base
 {
     public interface IObserver
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 
+using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Builder;
 
 

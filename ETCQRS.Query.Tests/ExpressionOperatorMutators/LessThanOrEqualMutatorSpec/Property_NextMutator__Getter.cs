@@ -1,6 +1,4 @@
-﻿using System;
-
-using ETCQRS.Query.ExpressionOperatorMutators;
+﻿using ETCQRS.Query.ExpressionOperatorMutator;
 using ETCQRS.Query.Util;
 
 using NUnit.Framework;

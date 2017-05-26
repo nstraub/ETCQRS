@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Abstractions.Util;
-using ETCQRS.Query.ExpressionOperatorMutators;
+using ETCQRS.Query.ExpressionOperatorMutator;
 
 using Moq;
 

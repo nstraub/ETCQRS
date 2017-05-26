@@ -88,6 +88,15 @@ namespace ETCQRS.Query.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There must be a Query to build from. Currently, no query is being built.
+        /// </summary>
+        internal static string NoQuery {
+            get {
+                return ResourceManager.GetString("NoQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You must provide a property to compare the value to.
         /// </summary>
         internal static string PropertyNullReference {
@@ -102,6 +111,15 @@ namespace ETCQRS.Query.Resources {
         internal static string QueryNullReference {
             get {
                 return ResourceManager.GetString("QueryNullReference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When casting your destination must be a subtype of your source.
+        /// </summary>
+        internal static string WrongOfTypeCast {
+            get {
+                return ResourceManager.GetString("WrongOfTypeCast", resourceCulture);
             }
         }
     }

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using ETCQRS.Query.Abstractions.Util;
-using ETCQRS.Query.ExpressionOperatorMutators;
+using ETCQRS.Query.ExpressionOperatorMutator;
 
 
 namespace ETCQRS.Query.Util

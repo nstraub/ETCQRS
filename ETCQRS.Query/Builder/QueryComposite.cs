@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 using ETCQRS.Query.Abstractions.Builder;
 
@@ -13,19 +12,11 @@ namespace ETCQRS.Query.Builder
 {
     public class QueryComposite : IQueryComposite
     {
-        private static readonly MethodInfo SelectMethodInfo;
-        private static readonly MethodInfo WhereMethodInfo;
-        private static readonly MethodInfo SelectManyMethodInfo;
-        private static readonly MethodInfo OfTypeMethodInfo;
+        private static readonly CallFactory CallFactory;
 
         static QueryComposite ()
         {
-            var methodInfos = typeof(Queryable).GetMethods(BindingFlags.Static | BindingFlags.Public);
-
-            SelectMethodInfo = methodInfos.First(m => m.Name == "Select" && m.GetParameters().Length == 2);
-            SelectManyMethodInfo = methodInfos.First(m => m.Name == "SelectMany" && m.GetParameters().Length == 2);
-            WhereMethodInfo = methodInfos.First(m => m.Name == "Where" && m.GetParameters().Length == 2);
-            OfTypeMethodInfo = methodInfos.First(m => m.Name == "OfType" && m.GetParameters().Length == 1);
+            CallFactory = new CallFactory();
         }
 
         public QueryComposite ()
@@ -39,7 +30,7 @@ namespace ETCQRS.Query.Builder
         public IQueryComposite AddWhereExpression<T> (Expression<Func<T, bool>> expressionResult)
             where T : class
         {
-            CallChain.Enqueue(Expression.Call(WhereMethodInfo.MakeGenericMethod(typeof(T)), Expression.Parameter(typeof(IQueryable<T>)), expressionResult));
+            CallChain.Enqueue(CallFactory.CreateWhere(expressionResult));
             return this;
         }
 
@@ -47,22 +38,19 @@ namespace ETCQRS.Query.Builder
             where TIn : class
             where TOut : class
         {
-//            Contract.Requires<InvalidOperationException>(mapper != null || typeof(TIn).IsAssignableFrom(typeof(TOut)), "WrongOfTypeCast");
-
-            var tin = typeof(TIn);
-
-            var tout = typeof(TOut);
             if (mapper is null)
             {
-                Enqueue(OfTypeMethodInfo.MakeGenericMethod(tout), Expression.Parameter(typeof(IQueryable<>).MakeGenericType(tin)));
+                CallChain.Enqueue(CallFactory.CreateOfType<TIn, TOut>());
+            }
+            else if (typeof(IEnumerable).IsAssignableFrom(typeof(TOut)))
+            {
+                CallChain.Enqueue(CallFactory.CreateSelectMany(mapper));
             }
             else
             {
-                var parameter = Expression.Parameter(typeof(IQueryable<TIn>));
-                var selectMany = typeof(IEnumerable).IsAssignableFrom(tout);
-
-                Enqueue((selectMany ? SelectManyMethodInfo : SelectMethodInfo).MakeGenericMethod(tin, selectMany ? tout.GenericTypeArguments [0] : tout), parameter, mapper);
+                CallChain.Enqueue(CallFactory.CreateSelect(mapper));
             }
+
             return this;
         }
 
@@ -72,15 +60,6 @@ namespace ETCQRS.Query.Builder
             where TOut : class
         {
             return (IQueryable<TOut>) Run(source, CallChain);
-        }
-
-        private void Enqueue (MethodInfo genericMethod, ParameterExpression parameter) { CallChain.Enqueue(Expression.Call(genericMethod, parameter)); }
-
-        private void Enqueue<TIn, TOut> (MethodInfo genericMethod, ParameterExpression parameter, Expression<Func<TIn, TOut>> mapper)
-            where TIn : class
-            where TOut : class
-        {
-            CallChain.Enqueue(Expression.Call(genericMethod, parameter, mapper));
         }
 
         private IQueryable Run (IQueryable source, Queue<MethodCallExpression> expressions)

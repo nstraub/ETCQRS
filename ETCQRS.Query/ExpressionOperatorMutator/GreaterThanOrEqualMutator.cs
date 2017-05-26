@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using ETCQRS.Query.Abstractions.Util;
 
 
-namespace ETCQRS.Query.ExpressionOperatorMutators
+namespace ETCQRS.Query.ExpressionOperatorMutator
 {
     public class GreaterThanOrEqualMutator : GenericMutatorTemplate
     {

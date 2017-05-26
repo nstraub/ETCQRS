@@ -1,7 +1,7 @@
 ﻿using System;
 
 using ETCQRS.Query.Abstractions.Builder;
-using ETCQRS.Query.ExpressionOperatorMutators;
+using ETCQRS.Query.ExpressionOperatorMutator;
 
 using Moq;
 
