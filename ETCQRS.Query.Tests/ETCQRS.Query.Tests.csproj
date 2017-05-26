@@ -135,11 +135,35 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builder\QueryBuildDirectorSpec\Method_UsingType.cs" />
+    <Compile Include="Builder\QueryBuildDirectorSpec\Property_And__Getter.cs" />
+    <Compile Include="Builder\QueryBuildDirectorSpec\Property_Or__Getter.cs" />
+    <Compile Include="Builder\QueryBuilderSpec\Method_AddExpression.cs" />
+    <Compile Include="Builder\QueryBuilderSpec\Property_QueryLinker__Setter.cs" />
+    <Compile Include="ExpressionOperatorMutators\NullMutatorSpec\Method_Execute.cs" />
+    <Compile Include="ExpressionOperatorMutators\GenericMutatorTemplateSpec\Method_Execute.cs" />
+    <Compile Include="ExpressionOperatorMutators\GreaterThanOrEqualMutatorSpec\Property_NextMutator__Getter.cs" />
+    <Compile Include="ExpressionOperatorMutators\GreaterThanOrEqualMutatorSpec\Property_TargetExpression__Getter.cs" />
+    <Compile Include="ExpressionOperatorMutators\LessThanOrEqualMutatorSpec\Property_NextMutator__Getter.cs" />
+    <Compile Include="ExpressionOperatorMutators\LessThanOrEqualMutatorSpec\Property_TargetExpression__Getter.cs" />
+    <Compile Include="ExpressionOperatorMutators\ThrowingMutatorSpec\Method_Execute.cs" />
+    <Compile Include="Extensions\QueryBuildDirectorExtensionsSpec\Method_BasicMethods.cs" />
+    <Compile Include="Fakes\FakeEntity.cs" />
+    <Compile Include="Fakes\OtherFakeEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\MutatorFlyweightFactorySpec\Method_Get.cs" />
+    <Compile Include="Util\QueryDescriptorFactorySpec\Method_Create.cs" />
+    <Compile Include="Util\QueryFlyweightFactorySpec\Method_Get.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ETCQRS.Query\ETCQRS.Query.csproj">
+      <Project>{E80B7DEA-B18A-4671-9C83-4C9D54C59E38}</Project>
+      <Name>ETCQRS.Query</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

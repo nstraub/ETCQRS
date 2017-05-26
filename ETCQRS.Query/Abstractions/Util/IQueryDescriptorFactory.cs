@@ -8,5 +8,6 @@ namespace ETCQRS.Query.Abstractions.Util
     public interface IQueryDescriptorFactory
     {
         IQueryDescriptor Create (Type type);
+        IObserver CreateMutatorObserver (IQueryDescriptor descriptor);
     }
 }
