@@ -7,7 +7,7 @@ using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Util;
 
 
-namespace ETCQRS.Query.Util
+namespace ETCQRS.Query.Factories
 {
     public class QueryFlyweightFactory : IFlyweightFactory<IQuery>
     {

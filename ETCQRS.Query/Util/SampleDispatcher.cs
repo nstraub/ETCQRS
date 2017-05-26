@@ -6,6 +6,7 @@ using System.Linq;
 using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Builder;
+using ETCQRS.Query.Factories;
 
 
 namespace ETCQRS.Query.Util

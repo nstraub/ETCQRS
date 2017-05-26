@@ -7,7 +7,7 @@ using ETCQRS.Query.Builder;
 using ETCQRS.Query.ExpressionOperatorMutator;
 
 
-namespace ETCQRS.Query.Util
+namespace ETCQRS.Query.Factories
 {
     public class QueryDescriptorFactory : IQueryDescriptorFactory
     {

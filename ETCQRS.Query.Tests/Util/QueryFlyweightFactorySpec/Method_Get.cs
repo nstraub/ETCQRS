@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ETCQRS.Query.Util;
+using ETCQRS.Query.Factories;
 
 using NUnit.Framework;
 

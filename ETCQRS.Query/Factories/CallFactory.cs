@@ -6,7 +6,7 @@ using ETCQRS.Query.Resources;
 using ETCQRS.Query.Util;
 
 
-namespace ETCQRS.Query.Builder
+namespace ETCQRS.Query.Factories
 {
     public class CallFactory
     {

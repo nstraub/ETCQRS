@@ -57,11 +57,11 @@
     <Compile Include="Abstractions\Builder\IQueryDescriptor.cs" />
     <Compile Include="Abstractions\Builder\QueryBuilderTemplate.cs" />
     <Compile Include="Abstractions\Builder\QuerylessBuilderTemplate.cs" />
-    <Compile Include="Builder\CallFactory.cs" />
+    <Compile Include="Factories\CallFactory.cs" />
     <Compile Include="Abstractions\Util\IFlyweightFactory.cs" />
     <Compile Include="Abstractions\Util\IExpressionMutator.cs" />
     <Compile Include="Abstractions\Util\IQueryDescriptorFactory.cs" />
-    <Compile Include="Builder\MethodInfos.cs" />
+    <Compile Include="Factories\MethodInfos.cs" />
     <Compile Include="Builder\QueryBuildFacade.cs" />
     <Compile Include="Builder\QueryExpressionBuilder.cs" />
     <Compile Include="Builder\QueryDescriptor.cs" />
@@ -78,10 +78,10 @@
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Util\Ensure.cs" />
-    <Compile Include="Util\MutatorFlyweightFactory.cs" />
+    <Compile Include="Factories\MutatorFlyweightFactory.cs" />
     <Compile Include="ExpressionOperatorMutator\MutatorObserver.cs" />
-    <Compile Include="Util\QueryDescriptorFactory.cs" />
-    <Compile Include="Util\QueryFlyweightFactory.cs" />
+    <Compile Include="Factories\QueryDescriptorFactory.cs" />
+    <Compile Include="Factories\QueryFlyweightFactory.cs" />
     <Compile Include="Util\SampleDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>

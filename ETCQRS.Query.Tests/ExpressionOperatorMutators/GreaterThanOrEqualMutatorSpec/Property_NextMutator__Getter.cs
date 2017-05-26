@@ -1,5 +1,5 @@
 ﻿using ETCQRS.Query.ExpressionOperatorMutator;
-using ETCQRS.Query.Util;
+using ETCQRS.Query.Factories;
 
 using NUnit.Framework;
 

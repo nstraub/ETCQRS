@@ -2,7 +2,7 @@
 using System.Reflection;
 
 
-namespace ETCQRS.Query.Builder
+namespace ETCQRS.Query.Factories
 {
     internal static class MethodInfos
     {

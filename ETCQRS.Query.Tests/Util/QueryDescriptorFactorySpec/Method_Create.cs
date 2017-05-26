@@ -1,6 +1,6 @@
 ﻿using ETCQRS.Query.Abstractions.Util;
+using ETCQRS.Query.Factories;
 using ETCQRS.Query.Tests.Fakes;
-using ETCQRS.Query.Util;
 
 using NUnit.Framework;
 using Moq;

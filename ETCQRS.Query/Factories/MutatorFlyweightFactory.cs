@@ -4,7 +4,7 @@ using ETCQRS.Query.Abstractions.Util;
 using ETCQRS.Query.ExpressionOperatorMutator;
 
 
-namespace ETCQRS.Query.Util
+namespace ETCQRS.Query.Factories
 {
     public class MutatorFlyweightFactory : IFlyweightFactory<IExpressionMutator>
     {
