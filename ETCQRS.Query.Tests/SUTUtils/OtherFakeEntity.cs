@@ -1,4 +1,4 @@
-﻿namespace ETCQRS.Query.Tests.Fakes
+﻿namespace ETCQRS.Query.Tests.SUTUtils
 {
     public class OtherFakeEntity
     {

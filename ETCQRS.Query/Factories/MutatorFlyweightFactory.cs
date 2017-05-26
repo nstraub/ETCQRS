@@ -22,7 +22,7 @@ namespace ETCQRS.Query.Factories
 
         #region Implementation of IFlyweightFactory<out IExpressionMutator>
 
-        public IExpressionMutator Get (string key)
+        public virtual IExpressionMutator Get (string key)
         {
             try
             {

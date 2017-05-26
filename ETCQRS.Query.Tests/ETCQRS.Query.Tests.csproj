@@ -139,6 +139,9 @@
     <Compile Include="Builder\QueryExpressionBuilderSpec\Property_Or__Getter.cs" />
     <Compile Include="Builder\QueryExpressionBuilderSpec\Method_AddExpression.cs" />
     <Compile Include="Builder\QueryExpressionBuilderSpec\Property_QueryLinker__Setter.cs" />
+    <Compile Include="SUTUtils\FakeQuery.cs" />
+    <Compile Include="SUTUtils\NinjectModules\BaseExpressionGraph.cs" />
+    <Compile Include="SUTUtils\NinjectModules\BaseObjectGraph.cs" />
     <Compile Include="ExpressionOperatorMutators\MutatorObserverSpec\Method_Update.cs" />
     <Compile Include="ExpressionOperatorMutators\NullMutatorSpec\Method_Execute.cs" />
     <Compile Include="ExpressionOperatorMutators\GenericMutatorTemplateSpec\Method_Execute.cs" />
@@ -148,8 +151,11 @@
     <Compile Include="ExpressionOperatorMutators\LessThanOrEqualMutatorSpec\Method_GetTargetExpression.cs" />
     <Compile Include="ExpressionOperatorMutators\ThrowingMutatorSpec\Method_Execute.cs" />
     <Compile Include="Extensions\QueryBuildDirectorExtensionsSpec\Method_BasicMethods.cs" />
-    <Compile Include="Fakes\FakeEntity.cs" />
-    <Compile Include="Fakes\OtherFakeEntity.cs" />
+    <Compile Include="SUTUtils\FakeEntity.cs" />
+    <Compile Include="SUTUtils\NinjectFixture.cs" />
+    <Compile Include="SUTUtils\NinjectModules\BinaryExpressionsGraph.cs" />
+    <Compile Include="SUTUtils\NinjectModules\InitialQueryGraph.cs" />
+    <Compile Include="SUTUtils\OtherFakeEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\MutatorFlyweightFactorySpec\Method_Get.cs" />
     <Compile Include="Util\QueryDescriptorFactorySpec\Method_Create.cs" />
