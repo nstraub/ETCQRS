@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="Abstractions\Base\IQuery.cs" />
     <Compile Include="Abstractions\Base\IQueryDispatcher.cs" />
-    <Compile Include="Abstractions\Base\IQueryHandler.cs" />
     <Compile Include="Abstractions\Base\IQueryResult.cs" />
     <Compile Include="Abstractions\Base\IObserver.cs" />
     <Compile Include="Abstractions\Base\IObservable.cs" />
@@ -83,6 +82,7 @@
     <Compile Include="ExpressionOperatorMutator\MutatorObserver.cs" />
     <Compile Include="Util\QueryDescriptorFactory.cs" />
     <Compile Include="Util\QueryFlyweightFactory.cs" />
+    <Compile Include="Util\SampleDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
