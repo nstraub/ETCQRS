@@ -55,7 +55,6 @@
     <Compile Include="Abstractions\Builder\IQueryBuilder.cs" />
     <Compile Include="Abstractions\Builder\IQueryBuildFacade.cs" />
     <Compile Include="Abstractions\Builder\IQueryExpressionBuilder.cs" />
-    <Compile Include="Abstractions\Builder\IQueryComposite.cs" />
     <Compile Include="Abstractions\Builder\IQueryDescriptor.cs" />
     <Compile Include="Abstractions\Builder\QueryBuilderTemplate.cs" />
     <Compile Include="Abstractions\Builder\QuerylessBuilderTemplate.cs" />
@@ -66,7 +65,6 @@
     <Compile Include="Builder\MethodInfos.cs" />
     <Compile Include="Builder\QueryBuildFacade.cs" />
     <Compile Include="Builder\QueryExpressionBuilder.cs" />
-    <Compile Include="Builder\QueryComposite.cs" />
     <Compile Include="Builder\QueryDescriptor.cs" />
     <Compile Include="ExpressionOperatorMutator\GenericMutatorTemplate.cs" />
     <Compile Include="ExpressionOperatorMutator\GreaterThanOrEqualMutator.cs" />

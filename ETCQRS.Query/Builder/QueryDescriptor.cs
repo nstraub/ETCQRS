@@ -15,7 +15,7 @@ namespace ETCQRS.Query.Builder
             Mutator = mutators.Get("Throwing");
         }
 
-        public IExpressionMutator Mutator { get; set; }
+        private IExpressionMutator Mutator { get; set; }
         public void SetMutator (IExpressionMutator mutator)
         {
             Mutator = mutator;

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 using ETCQRS.Query.Abstractions.Base;
@@ -11,13 +12,13 @@ namespace ETCQRS.Query.Builder
 {
     public class QueryBuildFacade : IQueryBuildFacade
     {
-        private IQueryComposite Composite { get; }
-
-        public QueryBuildFacade (IQueryComposite composite)
+        public Queue<MethodCallExpression> CallChain { get; }
+        public QueryBuildFacade ()
         {
-            Composite = composite;
+            CallChain = new Queue<MethodCallExpression>();
         }
-        
+
+
         public void AddQuery (IQuery query, IQueryBuilder queryBuilder)
         {
             queryBuilder.Init(query);
@@ -27,13 +28,36 @@ namespace ETCQRS.Query.Builder
             queryBuilder.BuildMethodCall();
             foreach (var result in queryBuilder.GetResults())
             {
-                Composite.CallChain.Enqueue(result);
+                CallChain.Enqueue(result);
             }
         }
 
         public IQueryable<TOut> Run<TIn, TOut> (IQueryable<TIn> source) where TIn : class where TOut : class
         {
-            return Composite.Run<TIn, TOut>(source);
+            return (IQueryable<TOut>)Run(source, CallChain);
+        }
+
+        private IQueryable Run (IQueryable source, Queue<MethodCallExpression> expressions)
+        {
+            IQueryable NextInLine ()
+            {
+                return source.Provider.CreateQuery(UpdateCall(source, CallChain.Dequeue()));
+            }
+
+            return expressions.Count > 1 ? Run(NextInLine(), CallChain) : NextInLine();
+        }
+
+        private MethodCallExpression UpdateCall (IQueryable source, MethodCallExpression methodCallExpression)
+        {
+            return methodCallExpression.Update(null, new List<Expression>
+                                                     {
+                                                         Expression.Constant(source)
+                                                     }.Concat(StripParameters(methodCallExpression)));
+        }
+
+        private IEnumerable<Expression> StripParameters (MethodCallExpression methodCallExpression)
+        {
+            return methodCallExpression.Arguments.Where(arg => arg.NodeType != ExpressionType.Parameter);
         }
     }
 }
