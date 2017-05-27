@@ -1,58 +1,61 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 
-using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.ExpressionOperatorMutator;
-using ETCQRS.Query.Tests.SUTUtils;
-using ETCQRS.Query.Tests.SUTUtils.NinjectModules;
 
 using Moq;
 
-using Ninject;
-using Ninject.MockingKernel.Moq;
-
 using NUnit.Framework;
+
+using TestFramework.NUnit.Ninject.Moq;
+
 
 namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.MutatorObserverSpec
 {
     [TestFixture]
-    public class Method_Update : NinjectFixture
+    public class Method_Update : TestsFor<MutatorObserver>
     {
         private Mock<IQueryDescriptor> _descriptorMock;
-        private IObserver _observer;
+        private IDictionary<string, BinaryExpression> _expressions;
 
-        [OneTimeSetUp]
-        public void FixtureSetup ()
+        private BinaryExpression GetQuery (string key)
         {
-            Kernel.Load(new BinaryExpressionsGraph(Expression.Constant(3)));
+            return _expressions[key];
         }
 
         [SetUp]
         public void TestSetup ()
         {
-            _descriptorMock = Kernel.GetMock<IQueryDescriptor>();
-            
-            _observer = Kernel.Get<MutatorObserver>();
+            _descriptorMock = GetMock<IQueryDescriptor>();
+
+            var constant = Expression.Constant(3);
+            _expressions = new Dictionary<string, BinaryExpression>
+            {
+                { "Equal", Expression.Equal(constant, constant) },
+                { "GreaterThan", Expression.GreaterThan(constant, constant) },
+                { "LessThan", Expression.LessThan(constant, constant) }
+            };
         }
 
         [Test]
         public void IT_SHOULD_CHANGE_MUTATOR_TO_GREATER_THAN_OR_EQUAL_IF_PASSED_EXPRESSION_IS_OF_TYPE_GREATER_THAN ()
         {
-            _observer.Update(GetQuery("GreaterThan"));
+            Subject.Update(GetQuery("GreaterThan"));
             _descriptorMock.Verify(d => d.SetMutator(It.IsAny<GreaterThanOrEqualMutator>()), Times.Once);
         }
 
         [Test]
         public void IT_SHOULD_CHANGE_MUTATOR_TO_LESS_THAN_OR_EQUAL_IF_PASSED_EXPRESSION_IS_OF_TYPE_LESS_THAN ()
         {
-            _observer.Update(GetQuery("LessThan"));
+            Subject.Update(GetQuery("LessThan"));
             _descriptorMock.Verify(d => d.SetMutator(It.IsAny<LessThanOrEqualMutator>()), Times.Once);
         }
 
         [Test]
         public void IT_SHOULD_CHANGE_MUTATOR_TO_NULL_IF_PASSED_EXPRESSION_IS_OF_ANY_OTHER_TYPE ()
         {
-            _observer.Update(GetQuery("Equal"));
+            Subject.Update(GetQuery("Equal"));
             _descriptorMock.Verify(d => d.SetMutator(It.IsAny<NullMutator>()), Times.Once);
         }
     }

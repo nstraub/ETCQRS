@@ -37,7 +37,7 @@ namespace ETCQRS.Query.Builder
 
         public virtual IQueryExpressionBuilder AddExpression (Func<Expression, Expression, BinaryExpression> operatorFunc, object value)
         {
-            Ensure.NullReference(Descriptor.Property, ErrorMessages.PropertyNullReference);
+            Ensure.IsNotNull(Descriptor.Property, ErrorMessages.PropertyNullReference);
 
             var query = operatorFunc(Descriptor.Property, Expression.Constant(value));
 

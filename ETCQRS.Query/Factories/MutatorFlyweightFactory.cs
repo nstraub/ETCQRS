@@ -20,8 +20,6 @@ namespace ETCQRS.Query.Factories
                         };
         }
 
-        #region Implementation of IFlyweightFactory<out IExpressionMutator>
-
         public virtual IExpressionMutator Get (string key)
         {
             try
@@ -30,10 +28,8 @@ namespace ETCQRS.Query.Factories
             }
             catch (KeyNotFoundException e)
             {
-                throw new KeyNotFoundException($"The given key, \"{key}\" was not present in the dictionary.", e);
+                throw new KeyNotFoundException($"The given key, \"{key}\" is not present in the dictionary.", e);
             }
         }
-
-        #endregion
     }
 }

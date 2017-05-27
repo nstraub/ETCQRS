@@ -13,11 +13,7 @@ namespace ETCQRS.Query.Factories
     {
         private readonly IDictionary<string, Type> _queries = new Dictionary<string, Type>();
         private readonly IDictionary<string, IQuery> _flyweights = new Dictionary<string, IQuery>();
-
-        public QueryFlyweightFactory(params string[] assemblyNames) : this(AppDomain.CurrentDomain.GetAssemblies().Where(assembly => assemblyNames.Any(an => assembly.FullName.Contains(an))).SelectMany(assembly => assembly.GetTypes()).Where(type => typeof(IQuery).IsAssignableFrom(type)))
-        {
-        }
-
+        
         public QueryFlyweightFactory (IEnumerable<Type> queries)
         {
             bool OnlyHasOneParameterlessConstructor (ConstructorInfo[] constructors) => constructors.Length == 1 && constructors [0].GetParameters().Length == 0;
@@ -38,7 +34,7 @@ namespace ETCQRS.Query.Factories
             }
             catch (KeyNotFoundException e)
             {
-                throw new KeyNotFoundException($"The given key, \"{key}\" was not present in the dictionary.", e);
+                throw new KeyNotFoundException($"The given key, \"{key}\" is not present in the dictionary.", e);
             }
         }
 

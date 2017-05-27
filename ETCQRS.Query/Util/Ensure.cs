@@ -17,7 +17,7 @@ namespace ETCQRS.Query.Util
         }
 
         [AssertionMethod]
-        public static void NullReference<T> (T predicate, string message)
+        public static void IsNotNull<T> (T predicate, string message)
         {
             if (predicate == null)
             {

@@ -1,51 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Abstractions.Util;
 using ETCQRS.Query.ExpressionOperatorMutator;
-using ETCQRS.Query.Tests.SUTUtils;
-using ETCQRS.Query.Tests.SUTUtils.NinjectModules;
 
 using Moq;
-using Ninject.MockingKernel.Moq;
 
 using NUnit.Framework;
-using Ninject;
+
+using TestFramework.NUnit.Ninject.Moq;
 
 
 namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.GenericMutatorTemplateSpec
 {
 
     [TestFixture]
-    public class Method_Execute : NinjectFixture
+    public class Method_Execute : TestsFor<GenericMutatorTemplate>
     {
         private IQueryDescriptor _context;
-
-        [OneTimeSetUp]
-        public void FixtureSetup ()
-        {
-            
-            Kernel.Load(new InitialQueryGraph(Expression.Equal(Expression.Constant(3), Expression.Constant(3))));
-        }
+        private IDictionary<string, BinaryExpression> _expressions;
 
         [SetUp]
         public void TestSetup ()
         {
-            var mutatorMock = Kernel.GetMock<GenericMutatorTemplate>();
+            var mutatorMock = GetMock<GenericMutatorTemplate>();
             mutatorMock.CallBase = true;
             mutatorMock.Setup(m => m.GetTargetExpression()).Returns(Expression.NotEqual);
-            mutatorMock.SetupGet(m => m.NextMutator).Returns(Kernel.Get<IExpressionMutator>());
+            mutatorMock.SetupGet(m => m.NextMutator).Returns(GetMock<IExpressionMutator>().Object);
 
-            Kernel.GetMock<IQueryDescriptor>().SetupProperty(c => c.Query);
+            var constant = Expression.Constant(3);
+            var query = Expression.Equal(constant, constant);
+            _expressions = new Dictionary<string, BinaryExpression>
+                          {
+                              { "Initial", query },
+                              { "AndAlso", Expression.AndAlso(query, query) },
+                              { "OrElse", Expression.OrElse(query, query) }
+                          };
 
-            _context = Kernel.Get<IQueryDescriptor>();
+            GetMock<IQueryDescriptor>().SetupProperty(c => c.Query);
+
+            _context = GetMock<IQueryDescriptor>().Object;
             _context.Query = GetQuery("Initial");
         }
-        
+
+        private BinaryExpression GetQuery (string key)
+        {
+            return _expressions[key];
+        }
+
         private void Mutate ()
         {
-            Kernel.Get<GenericMutatorTemplate>().Execute(_context);
+            Subject.Execute(_context);
         }
 
 
@@ -54,18 +61,16 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.GenericMutatorTemplateSp
         {
             Mutate();
 
-            Assert.AreEqual(ExpressionType.NotEqual, _context.Query.NodeType);
+            Assert.That(_context.Query.NodeType, Is.EqualTo(ExpressionType.NotEqual));
         }
 
         [Test]
         public void IT_SHOULD_SKIP_MUTATION_IF_TARGET_EXPRESSION_IS_NULL ()
         {
-            Kernel.GetMock<GenericMutatorTemplate>().Setup(m => m.GetTargetExpression()).Returns(() => null);
-            
-
+            GetMock<GenericMutatorTemplate>().Setup(m => m.GetTargetExpression()).Returns(() => null);
             
             Mutate();
-            Assert.AreSame(GetQuery("Initial"), _context.Query);
+            Assert.That(_context.Query, Is.SameAs(GetQuery("Initial")));
         }
 
         [Test]
@@ -75,8 +80,8 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.GenericMutatorTemplateSp
 
             Mutate();
 
-            Assert.AreEqual(ExpressionType.Equal, _context.Query.Left.NodeType);
-            Assert.AreEqual(ExpressionType.NotEqual, _context.Query.Right.NodeType);
+            Assert.That(_context.Query.Left.NodeType, Is.EqualTo(ExpressionType.Equal));
+            Assert.That(_context.Query.Right.NodeType, Is.EqualTo(ExpressionType.NotEqual));
         }
 
         [Test]
@@ -86,7 +91,7 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.GenericMutatorTemplateSp
 
             Mutate();
 
-            Assert.AreEqual(ExpressionType.AndAlso, _context.Query.NodeType);
+            Assert.That(_context.Query.NodeType, Is.EqualTo(ExpressionType.AndAlso));
         }
 
         [Test]
@@ -96,7 +101,7 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.GenericMutatorTemplateSp
 
             Mutate();
 
-            Assert.AreEqual(ExpressionType.OrElse, _context.Query.NodeType);
+            Assert.That(_context.Query.NodeType, Is.EqualTo(ExpressionType.OrElse));
         }
 
         [Test]
@@ -104,8 +109,7 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.GenericMutatorTemplateSp
         {
             _context.Query = null;
 
-            var exception = Assert.Throws<NullReferenceException>(Mutate);
-            Assert.AreEqual("There is no query to mutate", exception.Message);
+            Assert.That(Mutate, Throws.Exception.TypeOf<NullReferenceException>().With.Message.EqualTo("There is no query to mutate"));
         }
 
         [Test]
@@ -113,16 +117,15 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.GenericMutatorTemplateSp
         {
             Mutate();
 
-            Kernel.GetMock<IQueryDescriptor>().Verify(c => c.SetMutator(Kernel.Get<IExpressionMutator>()), Times.Once);
+            GetMock<IQueryDescriptor>().Verify(c => c.SetMutator(GetMock<IExpressionMutator>().Object), Times.Once);
         }
 
         [Test]
         public void IT_SHOULD_THROW_AN_INVALID_OPERATION_EXPRESSION_IF_THERE_IS_NO_MUTATOR_TO_SET_NEXT ()
         {
-            Kernel.GetMock<GenericMutatorTemplate>().SetupGet(m => m.NextMutator).Returns(() => null);
+            GetMock<GenericMutatorTemplate>().SetupGet(m => m.NextMutator).Returns(() => null);
 
-            var exception = Assert.Throws<NullReferenceException>(Mutate);
-            Assert.AreEqual("There is no mutator to set next", exception.Message);
+            Assert.That(Mutate, Throws.Exception.TypeOf<NullReferenceException>().With.Message.EqualTo("There is no mutator to set next"));
         }
     }
 }

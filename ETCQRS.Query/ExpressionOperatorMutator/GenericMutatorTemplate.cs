@@ -13,8 +13,8 @@ namespace ETCQRS.Query.ExpressionOperatorMutator
     {
         public virtual void Execute (IQueryDescriptor context)
         {
-            Ensure.NullReference(context.Query, ErrorMessages.QueryNullReference);
-            Ensure.NullReference(NextMutator, ErrorMessages.NextMutatorNullReference);
+            Ensure.IsNotNull(context.Query, ErrorMessages.QueryNullReference);
+            Ensure.IsNotNull(NextMutator, ErrorMessages.NextMutatorNullReference);
 
             var nodeType = context.Query.NodeType;
             var expression = GetTargetExpression();

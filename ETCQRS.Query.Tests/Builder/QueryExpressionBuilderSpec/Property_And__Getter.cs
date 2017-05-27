@@ -18,7 +18,7 @@ namespace ETCQRS.Query.Tests.Builder.QueryExpressionBuilderSpec
             
             // ReSharper disable once UnusedVariable
             var queryBuildDirector = builder.And;
-            Assert.AreEqual((Func<Expression, Expression, BinaryExpression>)Expression.AndAlso, builder.QueryLinker);
+            Assert.That(builder.QueryLinker, Is.EqualTo((Func<Expression, Expression, BinaryExpression>)Expression.AndAlso));
         }
     }
 }

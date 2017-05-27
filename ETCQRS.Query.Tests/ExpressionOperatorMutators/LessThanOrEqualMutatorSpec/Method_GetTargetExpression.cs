@@ -2,25 +2,22 @@
 using System.Linq.Expressions;
 
 using ETCQRS.Query.ExpressionOperatorMutator;
-using ETCQRS.Query.Tests.SUTUtils;
-using ETCQRS.Query.Tests.SUTUtils.NinjectModules;
-
-using Ninject;
-using Ninject.MockingKernel.Moq;
 
 using NUnit.Framework;
+
+using TestFramework.NUnit.Ninject.Moq;
 
 
 namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.LessThanOrEqualMutatorSpec
 
 {
     [TestFixture]
-    public class Method_GetTargetExpression : NinjectFixture
+    public class Method_GetTargetExpression : TestsFor<LessThanOrEqualMutator>
     {
         [Test]
         public void IT_SHOULD_RETURN_A_LESS_THAN_OR_EQUALS_EXPRESSION ()
         {
-            Assert.AreEqual((Func<Expression, Expression, BinaryExpression>)Expression.LessThanOrEqual, Kernel.Get<LessThanOrEqualMutator>().GetTargetExpression());
+            Assert.That(Subject.GetTargetExpression(), Is.EqualTo((Func<Expression, Expression, BinaryExpression>)Expression.LessThanOrEqual));
         }
     }
 }
