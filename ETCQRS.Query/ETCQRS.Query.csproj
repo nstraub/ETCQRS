@@ -57,6 +57,7 @@
     <Compile Include="Abstractions\Builder\IQueryDescriptor.cs" />
     <Compile Include="Abstractions\Builder\QueryBuilder.cs" />
     <Compile Include="Abstractions\Builder\QuerylessBuilder.cs" />
+    <Compile Include="Abstractions\Builder\WhereQueryBuilder.cs" />
     <Compile Include="Factories\CallFactory.cs" />
     <Compile Include="Abstractions\Util\IFlyweightFactory.cs" />
     <Compile Include="Abstractions\Util\IExpressionMutator.cs" />

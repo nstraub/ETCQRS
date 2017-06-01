@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using ETCQRS.Query.Abstractions.Base;
@@ -14,13 +13,12 @@ namespace ETCQRS.Query.Abstractions.Builder {
         protected readonly IQueryExpressionBuilder ExpressionBuilder;
         protected IQueryDescriptorFactory DescriptorFactory { get; }
 
+        protected IQuery Query { get; private set; }
+
         protected IQueryDescriptor Descriptor;
-
-        protected string PropertyName;
-
+        
         protected readonly CallFactory CallFactory = new CallFactory();
         protected readonly List<MethodCallExpression> MethodCall = new List<MethodCallExpression>();
-        protected Type ParameterType { get; set; }
 
         protected QueryBuilder (IQueryDescriptorFactory descriptorFactory, IQueryExpressionBuilder expressionBuilder)
         {
@@ -28,26 +26,23 @@ namespace ETCQRS.Query.Abstractions.Builder {
             DescriptorFactory = descriptorFactory;
         }
 
-        public virtual void InitProperties (IQuery query)
+        public virtual void Init (IQuery query)
         {
-            ParameterType = query.ParameterType;
-            PropertyName = query.PropertyName;
+            Query = query;
         }
-
-        public abstract void Init (IQuery query);
 
         public virtual void BuildParameter ()
         {
-            Descriptor = DescriptorFactory.Create(ParameterType);
+            Descriptor = DescriptorFactory.Create(Query.ParameterType);
             ExpressionBuilder.Descriptor = Descriptor;
         }
         
         public virtual void BuildProperty ()
         {
-            Descriptor.Property = Expression.Property(Descriptor.Parameter, PropertyName);
+            Descriptor.Property = Expression.Property(Descriptor.Parameter, Query.PropertyName);
         }
         public abstract void BuildExpression ();
-        public abstract void BuildMethodCall ();
+        public abstract void BuildMethodCalls ();
         public virtual MethodCallExpression[] GetResults ()
         {
             return MethodCall.ToArray();

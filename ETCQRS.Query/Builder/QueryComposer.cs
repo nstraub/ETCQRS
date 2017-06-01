@@ -19,12 +19,11 @@ namespace ETCQRS.Query.Builder
 
         public void AddQuery (IQuery query, IQueryBuilder queryBuilder)
         {
-            queryBuilder.InitProperties(query);
             queryBuilder.Init(query);
             queryBuilder.BuildParameter();
             queryBuilder.BuildProperty();
             queryBuilder.BuildExpression();
-            queryBuilder.BuildMethodCall();
+            queryBuilder.BuildMethodCalls();
 
             foreach (var result in queryBuilder.GetResults())
             {
