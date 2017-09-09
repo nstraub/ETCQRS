@@ -15,42 +15,59 @@ namespace ETCQRS.Query.Factories
 	{
 		private readonly IConfigurationProvider _mapperConfigurationProvider;
 
+		public IDictionary<string, Func<IQueryable, LambdaExpression, IQueryable>> Create { get; }
+
 		public CallFactory(IConfigurationProvider mapperConfigurationProvider)
 		{
 			_mapperConfigurationProvider = mapperConfigurationProvider;
+			Create = new Dictionary<string, Func<IQueryable, LambdaExpression, IQueryable>>
+			{
+				{ "ProjectTo", (source, lambda) => CreateProjectTo(source, (Expression<Func<Type>>) lambda) },
+				{ "Where", CreateWhere },
+				{ "Select", CreateSelect },
+				{ "SelectMany", CreateSelectMany },
+				{ "OfType", (source, lambda) => CreateOfType(source, (Expression<Func<Type>>) lambda) }
+			};
 		}
 
-		public MethodCallExpression CreateWhere<T>(Expression<Func<T, bool>> iterator) where T : class
+		private IQueryable CreateWhere(IQueryable source, LambdaExpression iterator)
 		{
-			return Expression.Call(MethodInfos.Where.MakeGenericMethod(typeof(T)), Expression.Parameter(typeof(IQueryable<T>)), iterator);
+			var methodCall = Expression.Call(MethodInfos.Where.MakeGenericMethod(source.ElementType), new[] { source.Expression, Expression.Quote(iterator) });
+			return source.Provider.CreateQuery(methodCall);
 		}
 
-		public MethodCallExpression CreateSingle<T>(Expression<Func<T, bool>> iterator) where T : class
+		private IQueryable CreateSelect(IQueryable source, LambdaExpression iterator)
 		{
-			return Expression.Call(MethodInfos.Single.MakeGenericMethod(typeof(T)), Expression.Parameter(typeof(IQueryable<T>)), iterator);
+			var methodCall = Expression.Call(MethodInfos.Select.MakeGenericMethod(source.ElementType, iterator.ReturnType),
+				new[] { source.Expression, Expression.Quote(iterator) });
+			return source.Provider.CreateQuery(methodCall);
 		}
 
-		public MethodCallExpression CreateSelect<TIn, TOut>(Expression<Func<TIn, TOut>> iterator) where TIn : class where TOut : class
+		private IQueryable CreateProjectTo(IQueryable source, Expression<Func<Type>> lambda)
 		{
-			return Expression.Call(MethodInfos.Select.MakeGenericMethod(typeof(TIn), typeof(TOut)), Expression.Parameter(typeof(IQueryable<TIn>)), iterator);
+			var outType = lambda.Compile().Invoke();
+
+			var genericFuncType = typeof(Func<,>).MakeGenericType(outType, typeof(object));
+			var genericExpressionType = typeof(Expression<>).MakeGenericType(genericFuncType);
+
+			var customMappings = genericExpressionType.MakeArrayType().GetConstructor(new[] { typeof(int) })
+				?.Invoke(new Object[] { 0 });
+			return (IQueryable)MethodInfos.Project.MakeGenericMethod(outType)
+				.Invoke(null, new[] { source, _mapperConfigurationProvider, customMappings });
 		}
 
-		public MethodCallExpression CreateProjectTo<TIn, TOut>(params Expression<Func<TOut, object>>[] iterators)
+		private IQueryable CreateSelectMany(IQueryable source, LambdaExpression iterator)
 		{
-			return Expression.Call(MethodInfos.Project.MakeGenericMethod(typeof(TOut)), Expression.Parameter(typeof(IQueryable<TIn>)),
-				Expression.Constant(_mapperConfigurationProvider),
-				Expression.NewArrayInit(typeof(Expression<Func<TOut, object>>), iterators));
+			var methodCall = Expression.Call(MethodInfos.SelectMany.MakeGenericMethod(source.ElementType, iterator.ReturnType.GenericTypeArguments[0]), source.Expression, Expression.Quote(iterator));
+			return source.Provider.CreateQuery(methodCall);
 		}
 
-		public MethodCallExpression CreateSelectMany<TIn, TOut>(Expression<Func<TIn, TOut>> iterator) where TIn : class where TOut : class
+		private IQueryable CreateOfType(IQueryable source, Expression<Func<Type>> lambda)
 		{
-			return Expression.Call(MethodInfos.SelectMany.MakeGenericMethod(typeof(TIn), typeof(TOut).GenericTypeArguments[0]), Expression.Parameter(typeof(IQueryable<TIn>)), iterator);
-		}
-
-		public MethodCallExpression CreateOfType<TIn, TOut>() where TIn : class where TOut : class
-		{
-			Ensure.That(typeof(TIn).IsAssignableFrom(typeof(TOut))).WithException(e => new InvalidOperationException(ErrorMessages.WrongOfTypeCast));
-			return Expression.Call(MethodInfos.OfType.MakeGenericMethod(typeof(TOut)), Expression.Parameter(typeof(IQueryable<>).MakeGenericType(typeof(TIn))));
+			var outType = lambda.Compile().Invoke();
+			Ensure.That(source.ElementType.IsAssignableFrom(outType)).WithException(e => new InvalidOperationException(ErrorMessages.WrongOfTypeCast));
+			var methodCall = Expression.Call(MethodInfos.OfType.MakeGenericMethod(outType), Expression.Parameter(typeof(IQueryable<>).MakeGenericType(source.ElementType)));
+			return source.Provider.CreateQuery(methodCall);
 		}
 	}
 }

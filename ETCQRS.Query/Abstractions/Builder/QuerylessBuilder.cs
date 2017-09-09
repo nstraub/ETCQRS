@@ -1,6 +1,5 @@
 using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Util;
-using ETCQRS.Query.Factories;
 
 namespace ETCQRS.Query.Abstractions.Builder
 {
@@ -22,7 +21,7 @@ namespace ETCQRS.Query.Abstractions.Builder
 		{
 		}
 
-		protected QuerylessBuilder(IQueryDescriptorFactory descriptorFactory, IQueryExpressionBuilder expressionBuilder, CallFactory callFactory) : base(descriptorFactory, expressionBuilder, callFactory)
+		protected QuerylessBuilder(IQueryDescriptorFactory descriptorFactory, IQueryExpressionBuilder expressionBuilder) : base(descriptorFactory, expressionBuilder)
 		{
 		}
 	}

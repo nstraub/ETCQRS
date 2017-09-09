@@ -1,17 +1,16 @@
 ﻿using System.Linq;
 using System.Reflection;
-using AutoMapper.QueryableExtensions;
 
 namespace ETCQRS.Query.Factories
 {
 	public static class MethodInfos
 	{
-		internal static readonly MethodInfo Select;
-		internal static readonly MethodInfo Where;
-		internal static readonly MethodInfo SelectMany;
-		internal static readonly MethodInfo OfType;
-		internal static readonly MethodInfo Single;
-		internal static readonly MethodInfo Project;
+		public static readonly MethodInfo Where;
+		public static readonly MethodInfo SelectMany;
+		public static readonly MethodInfo Select;
+		public static readonly MethodInfo OfType;
+		public static readonly MethodInfo Single;
+		public static readonly MethodInfo Project;
 
 		static MethodInfos()
 		{

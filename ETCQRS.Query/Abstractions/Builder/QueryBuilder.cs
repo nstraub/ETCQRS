@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 
 using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Util;
-using ETCQRS.Query.Factories;
 
 namespace ETCQRS.Query.Abstractions.Builder
 {
@@ -16,15 +15,13 @@ namespace ETCQRS.Query.Abstractions.Builder
 		protected IQuery Query { get; private set; }
 
 		protected IQueryDescriptor Descriptor;
+		
+		protected readonly List<(string, LambdaExpression)> MethodCalls = new List<(string, LambdaExpression)>();
 
-		protected readonly CallFactory CallFactory;
-		protected readonly List<MethodCallExpression> MethodCall = new List<MethodCallExpression>();
-
-		protected QueryBuilder(IQueryDescriptorFactory descriptorFactory, IQueryExpressionBuilder expressionBuilder, CallFactory callFactory)
+		protected QueryBuilder(IQueryDescriptorFactory descriptorFactory, IQueryExpressionBuilder expressionBuilder)
 		{
 			ExpressionBuilder = expressionBuilder;
 			DescriptorFactory = descriptorFactory;
-			CallFactory = callFactory;
 		}
 
 		public virtual void Init(IQuery query)
@@ -47,9 +44,9 @@ namespace ETCQRS.Query.Abstractions.Builder
 
 		public abstract void BuildMethodCalls();
 
-		public virtual MethodCallExpression[] GetResults()
+		public virtual (string, LambdaExpression)[] GetResults()
 		{
-			return MethodCall.ToArray();
+			return MethodCalls.ToArray();
 		}
 	}
 }
