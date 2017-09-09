@@ -1,6 +1,6 @@
 ﻿namespace ETCQRS.Command.Abstractions
 {
-    public interface ICommand
-    {
-    }
+	public interface ICommand
+	{
+	}
 }

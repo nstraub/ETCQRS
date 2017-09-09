@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using ETCQRS.Query.Abstractions.Base;
+﻿using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Factories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace ETCQRS.Query.Builder
 {
@@ -49,7 +48,7 @@ namespace ETCQRS.Query.Builder
 			IQueryable NextInLine()
 			{
 				var currentExpression = expressions.Dequeue();
-					return _callFactory.Create[currentExpression.Item1].Invoke(source, currentExpression.Item2);
+				return _callFactory.Create[currentExpression.Item1].Invoke(source, currentExpression.Item2);
 			}
 
 			return expressions.Count > 1 ? Run(NextInLine(), expressions) : NextInLine();

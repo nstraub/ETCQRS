@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq.Expressions;
-
-using ETCQRS.Query.Abstractions.Base;
+﻿using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Util;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace ETCQRS.Query.Abstractions.Builder
 {
@@ -15,7 +14,7 @@ namespace ETCQRS.Query.Abstractions.Builder
 		protected IQuery Query { get; private set; }
 
 		protected IQueryDescriptor Descriptor;
-		
+
 		protected readonly List<(string, LambdaExpression)> MethodCalls = new List<(string, LambdaExpression)>();
 
 		protected QueryBuilder(IQueryDescriptorFactory descriptorFactory, IQueryExpressionBuilder expressionBuilder)

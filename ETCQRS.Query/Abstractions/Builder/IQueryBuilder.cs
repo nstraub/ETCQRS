@@ -1,6 +1,5 @@
-﻿using System.Linq.Expressions;
-
-using ETCQRS.Query.Abstractions.Base;
+﻿using ETCQRS.Query.Abstractions.Base;
+using System.Linq.Expressions;
 
 namespace ETCQRS.Query.Abstractions.Builder
 {

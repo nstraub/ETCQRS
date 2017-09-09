@@ -1,13 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using EnsureThat;
+using ETCQRS.Query.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-
-using AutoMapper;
-
-using EnsureThat;
-
-using ETCQRS.Query.Resources;
 
 namespace ETCQRS.Query.Factories
 {
