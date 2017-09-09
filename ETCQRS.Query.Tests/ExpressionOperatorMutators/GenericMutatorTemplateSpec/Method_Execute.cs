@@ -117,7 +117,7 @@ namespace ETCQRS.Query.Tests.ExpressionOperatorMutators.GenericMutatorTemplateSp
         {
             Mutate();
 
-            GetMock<IQueryDescriptor>().Verify(c => c.SetMutator(GetMock<IExpressionMutator>().Object), Times.Once);
+            GetMock<IQueryDescriptor>().Verify(c => c.SetMutator(GetMock<IExpressionMutator>().Object), Times.Once());
         }
 
         [Test]

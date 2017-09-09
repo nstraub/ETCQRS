@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
+using EnsureThat;
+
 using ETCQRS.Query.Abstractions.Base;
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Resources;
-using ETCQRS.Query.Util;
 
 
 namespace ETCQRS.Query.Builder
@@ -37,7 +38,7 @@ namespace ETCQRS.Query.Builder
 
         public virtual IQueryExpressionBuilder AddExpression (Func<Expression, Expression, BinaryExpression> operatorFunc, object value)
         {
-            Ensure.IsNotNull(Descriptor.Property, ErrorMessages.PropertyNullReference);
+            Ensure.That(Descriptor.Property).WithException((e) => new NullReferenceException(ErrorMessages.PropertyNullReference)).IsNotNull();
 
             var query = operatorFunc(Descriptor.Property, Expression.Constant(value));
 
@@ -65,10 +66,10 @@ namespace ETCQRS.Query.Builder
 
         public Func<Expression, Expression, BinaryExpression> QueryLinker
         {
-            internal get { return _queryLinker; }
+            get { return _queryLinker; }
             set
             {
-                Ensure.ValidOperation(value == Expression.AndAlso || value == Expression.OrElse, ErrorMessages.InvalidQueryLinkerExpression);
+                Ensure.That(value == Expression.AndAlso || value == Expression.OrElse).WithException(e => new InvalidOperationException(ErrorMessages.InvalidQueryLinkerExpression)).IsTrue();
                 _queryLinker = value;
             }
         }

@@ -33,7 +33,7 @@ namespace ETCQRS.Query.Builder
 
         public IQueryable<TOut> Run<TIn, TOut> (IQueryable<TIn> source) where TIn : class where TOut : class
         {
-            return (IQueryable<TOut>)Run(source, CallChain);
+            return (IQueryable<TOut>)(CallChain.Count > 0 ? Run(source, CallChain) : source);
         }
 
         private IQueryable Run (IQueryable source, Queue<MethodCallExpression> expressions)

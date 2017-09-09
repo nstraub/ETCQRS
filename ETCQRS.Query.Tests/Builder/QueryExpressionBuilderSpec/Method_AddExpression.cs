@@ -116,7 +116,7 @@ namespace ETCQRS.Query.Tests.Builder.QueryExpressionBuilderSpec
             Subject.Subscribe(observerMock.Object);
             Subject.AddExpression(Expression.Equal, "test");
 
-            observerMock.Verify(o => o.Update(It.IsAny<BinaryExpression>()), Times.Once);
+            observerMock.Verify(o => o.Update(It.IsAny<BinaryExpression>()), Times.Once());
 
         }
     }

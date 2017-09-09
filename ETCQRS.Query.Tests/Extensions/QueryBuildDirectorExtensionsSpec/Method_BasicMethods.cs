@@ -36,36 +36,36 @@ namespace ETCQRS.Query.Tests.Extensions.QueryBuildDirectorExtensionsSpec
         public void EQUAL_METHOD ()
         {
             QueryBuildDirectorExtensions.Equal(_expressionBuilder, "test");
-            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.Equal, "test"), Times.Once);
+            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.Equal, "test"), Times.Once());
         }
 
         [Test]
         public void NOT_EQUAL_METHOD ()
         {
             QueryBuildDirectorExtensions.NotEqual(_expressionBuilder, "test");
-            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.NotEqual, "test"), Times.Once);
+            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.NotEqual, "test"), Times.Once());
         }
 
         [Test]
         public void GREATER_THAN_METHOD ()
         {
             QueryBuildDirectorExtensions.IsGreaterThan(_expressionBuilder, "test");
-            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.GreaterThan, "test"), Times.Once);
+            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.GreaterThan, "test"), Times.Once());
         }
 
         [Test]
         public void LESS_THAN_METHOD ()
         {
             QueryBuildDirectorExtensions.IsLessThan(_expressionBuilder, "test");
-            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.LessThan, "test"), Times.Once);
+            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.LessThan, "test"), Times.Once());
         }
 
         [Test]
         public void IN_OPEN_INTERVAL_METHOD ()
         {
             QueryBuildDirectorExtensions.InOpenInterval(_expressionBuilder, "test", "test");
-            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.GreaterThan, "test"), Times.Once);
-            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.LessThan, "test"), Times.Once);
+            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.GreaterThan, "test"), Times.Once());
+            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.LessThan, "test"), Times.Once());
         }
 
         [Test]
@@ -73,8 +73,8 @@ namespace ETCQRS.Query.Tests.Extensions.QueryBuildDirectorExtensionsSpec
         {
             QueryBuildDirectorExtensions.InClosedInterval(_expressionBuilder, "test", "test");
 
-            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.GreaterThan, "test"), Times.Once);
-            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.LessThan, "test"), Times.Once);
+            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.GreaterThan, "test"), Times.Once());
+            _expressionBuilderMock.Verify(d => d.AddExpression(Expression.LessThan, "test"), Times.Once());
             _expressionBuilderMock.Verify(d => d.Mutate(), Times.Exactly(2));
         }
     }

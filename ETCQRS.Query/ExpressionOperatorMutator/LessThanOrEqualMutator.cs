@@ -19,12 +19,6 @@ namespace ETCQRS.Query.ExpressionOperatorMutator
             return Expression.LessThanOrEqual;
         }
 
-        public override IExpressionMutator NextMutator
-        {
-            get
-            {
-                return _mutators.Get("Null");
-            }
-        }
+        public override IExpressionMutator NextMutator => _mutators.Get("Null");
     }
 }

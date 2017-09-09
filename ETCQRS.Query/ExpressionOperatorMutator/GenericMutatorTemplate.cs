@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
 
+using EnsureThat;
+
 using ETCQRS.Query.Abstractions.Builder;
 using ETCQRS.Query.Abstractions.Util;
 using ETCQRS.Query.Resources;
-using ETCQRS.Query.Util;
 
 
 namespace ETCQRS.Query.ExpressionOperatorMutator
@@ -13,8 +14,8 @@ namespace ETCQRS.Query.ExpressionOperatorMutator
     {
         public virtual void Execute (IQueryDescriptor context)
         {
-            Ensure.IsNotNull(context.Query, ErrorMessages.QueryNullReference);
-            Ensure.IsNotNull(NextMutator, ErrorMessages.NextMutatorNullReference);
+            Ensure.That(context.Query).WithException(e => new NullReferenceException(ErrorMessages.QueryNullReference)).IsNotNull();
+            Ensure.That(NextMutator).WithException(e => new NullReferenceException(ErrorMessages.NextMutatorNullReference)).IsNotNull();
 
             var nodeType = context.Query.NodeType;
             var expression = GetTargetExpression();
